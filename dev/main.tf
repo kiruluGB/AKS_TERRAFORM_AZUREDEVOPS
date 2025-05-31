@@ -39,7 +39,8 @@ module "keyvault" {
   keyvault_name               = var.keyvault_name
   location                    = var.location
   resource_group_name         = var.rgname
-  service_principal_name      = var.service_principal_name
+  #service_principle_name = module.ServicePrincipal.service_principal_name
+  service_principal_name      = module.ServicePrincipal.service_principal_name
   service_principal_object_id = module.ServicePrincipal.service_principal_object_id
   service_principal_tenant_id = module.ServicePrincipal.service_principal_tenant_id
 
@@ -58,7 +59,7 @@ resource "azurerm_key_vault_secret" "KVSCRT" {
 #create Azure Kubernetes Service
 module "aks" {
   source                 = "../modules/aks/"
-  service_principal_name = var.service_principal_name
+  service_principal_name = module.ServicePrincipal.display_name
   client_id              = module.ServicePrincipal.client_id
   client_secret          = module.ServicePrincipal.client_secret
   location               = var.location
